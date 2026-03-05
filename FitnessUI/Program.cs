@@ -25,7 +25,10 @@ namespace FitnessUI
             IBestandslezer lezer = BestandslezerFactory.GeefBestandslezer(textFileType, sourceFilePath, errorLogPath);
             IRepository repo = RepositoryFactory.GeefRepository(databaseType, connectionString);
             ImportBeheerder beheerder = new ImportBeheerder(lezer, repo);
-            beheerder.ImporteerGegevens();
+            
+            // Nadat je hebt geïmporteerd, verwijder je dit zodat je niet alles meerdere keren toevoegt.
+            // beheerder.ImporteerGegevens();
+
         }
     }
 }

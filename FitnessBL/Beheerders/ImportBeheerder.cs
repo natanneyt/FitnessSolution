@@ -17,7 +17,7 @@ namespace FitnessBL.Beheerders
         public void ImporteerGegevens()
         {
             List<Loopsessie> sessies = _lezer.LeesBestandIn();
-            foreach (Loopsessie loopsessie in sessies) Console.WriteLine(loopsessie.ToString());
+            _repo.ImporteerGegevens(sessies);
         }
     }
 }
