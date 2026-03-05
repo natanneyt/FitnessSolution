@@ -87,6 +87,11 @@ namespace FitnessBL.Domein
             }
         }
 
+        public override string ToString()
+        {
+            return $"Sequentienummer: {Sequentienummer} - Duur in seconden: {DuurInSeconden} - Loopsnelheid: {Loopsnelheid}";
+        }
+
         // We gebruiken een HashSet die geen twee dezelfde sequentienummers toelaat.
         public override bool Equals(object? obj)
         {

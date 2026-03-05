@@ -130,7 +130,9 @@ namespace FitnessBL.Domein
 
         public override string ToString()
         {
-            return $"Sessie {Sessienummer} - {Datum} - Klant: {Klantennummer} - Duur in minuten: {DuurInMinuten} - Gemiddelde snelheid: {GemiddeldeSnelheid}";
+            string tekst = $"Sessie {Sessienummer} - {Datum} - Klant: {Klantennummer} - Duur in minuten: {DuurInMinuten} - Gemiddelde snelheid: {GemiddeldeSnelheid}";
+            foreach(Loopinterval interval in Intervallen) { tekst += $"\n\t{interval.ToString()}"; }
+            return tekst;
         }
     }
 }

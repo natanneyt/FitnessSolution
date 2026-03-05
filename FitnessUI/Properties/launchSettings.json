@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "FitnessUI": {
+      "commandName": "Project",
+      "workingDirectory": "$(ProjectDir)"
+    }
+  }
+}

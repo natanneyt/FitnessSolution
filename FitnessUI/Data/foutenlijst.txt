@@ -1,0 +1,2 @@
+Lijn 9: Loopsnelheid te groot (max: 22): 38,4
+Lijn 10: Sessienummer te klein (min: 1): -3
