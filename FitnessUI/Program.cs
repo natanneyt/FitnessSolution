@@ -2,6 +2,7 @@
 using FitnessBL.Beheerders;
 using FitnessUtil.Factories;
 using Microsoft.Extensions.Configuration;
+using FitnessBL.Domein;
 
 namespace FitnessUI
 {
@@ -24,10 +25,24 @@ namespace FitnessUI
 
             IBestandslezer lezer = BestandslezerFactory.GeefBestandslezer(textFileType, sourceFilePath, errorLogPath);
             IRepository repo = RepositoryFactory.GeefRepository(databaseType, connectionString);
-            ImportBeheerder beheerder = new ImportBeheerder(lezer, repo);
-            
+            ImportBeheerder importBeheerder = new ImportBeheerder(lezer, repo);
+            FitnessBeheerder fitnessBeheerder = new FitnessBeheerder(repo);
+
+            List<Loopsessie> sessiesVanKlant = fitnessBeheerder.GeefSessiesVanKlant(6);
+
+            //foreach(Loopsessie sessie in sessiesVanKlant)
+            //{
+            //    Console.WriteLine($"{sessie}\n");
+            //}
+
+            List<Loopsessie> sessiesVanDag = fitnessBeheerder.GeefSessiesVanDag(new DateTime(2021, 11, 4));
+            foreach (Loopsessie sessie in sessiesVanDag)
+            {
+                Console.WriteLine($"{sessie}\n");
+            }
+
             // Nadat je hebt geïmporteerd, verwijder je dit zodat je niet alles meerdere keren toevoegt.
-            // beheerder.ImporteerGegevens();
+            // importBeheerder.ImporteerGegevens();
 
         }
     }
