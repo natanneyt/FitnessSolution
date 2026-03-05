@@ -30,10 +30,10 @@ namespace FitnessUI
 
             List<Loopsessie> sessiesVanKlant = fitnessBeheerder.GeefSessiesVanKlant(6);
 
-            //foreach(Loopsessie sessie in sessiesVanKlant)
-            //{
-            //    Console.WriteLine($"{sessie}\n");
-            //}
+            foreach (Loopsessie sessie in sessiesVanKlant)
+            {
+                Console.WriteLine($"{sessie}\n");
+            }
 
             List<Loopsessie> sessiesVanDag = fitnessBeheerder.GeefSessiesVanDag(new DateTime(2021, 11, 4));
             foreach (Loopsessie sessie in sessiesVanDag)

@@ -17,7 +17,7 @@ namespace FitnessDL
         public void ImporteerGegevens(List<Loopsessie> sessies)
         {
             // Maak de queries aan. Waarden die met @ beginnen zijn parameters
-            string sessieQuery = "INSERT INTO Loopsessie (sessienummer, datum, klantennummer, duurinminuten, gemiddeldesnelheid) " +
+            string sessieQuery = "SET IDENTITY_INSERT Loopsessie ON; INSERT INTO Loopsessie (id, datum, klantennummer, duurinminuten, gemiddeldesnelheid) " +
                 "OUTPUT Inserted.id VALUES(@sessienummer, @datum, @klantennummer, @duurinminuten, @gemiddeldesnelheid)";
 
             string intervalQuery = "INSERT INTO Loopinterval (sequentienummer, duurinseconden, loopsnelheid, sessieid) " +
@@ -94,7 +94,7 @@ namespace FitnessDL
         {
             Dictionary<int, Loopsessie> loopsessies = new Dictionary<int, Loopsessie>();
 
-            string query = "SELECT s.sessienummer, s.datum, s.klantennummer, s.duurinminuten, s.gemiddeldesnelheid, " +
+            string query = "SELECT s.id, s.datum, s.klantennummer, s.duurinminuten, s.gemiddeldesnelheid, " +
                 "i.sequentienummer, i.duurinseconden, i.loopsnelheid " +
                 "FROM Loopsessie s " +
                 "JOIN Loopinterval i ON s.id = i.sessieid " +
@@ -111,7 +111,7 @@ namespace FitnessDL
                     SqlDataReader reader = command.ExecuteReader();
                     while(reader.Read())
                     {
-                        int sessienummer = (int)reader["sessienummer"];
+                        int sessienummer = (int)reader["id"];
                         if (!loopsessies.ContainsKey(sessienummer))
                         {
                             loopsessies.Add(sessienummer, new Loopsessie(sessienummer, (DateTime)reader["datum"], (int)reader["klantennummer"], (int)reader["duurinminuten"], (double)reader["gemiddeldesnelheid"]));
@@ -128,7 +128,7 @@ namespace FitnessDL
         {
             Dictionary<int, Loopsessie> loopsessies = new Dictionary<int, Loopsessie>();
 
-            string query = "SELECT s.sessienummer, s.datum, s.klantennummer, s.duurinminuten, s.gemiddeldesnelheid, " +
+            string query = "SELECT s.id, s.datum, s.klantennummer, s.duurinminuten, s.gemiddeldesnelheid, " +
                 "i.sequentienummer, i.duurinseconden, i.loopsnelheid " +
                 "FROM Loopsessie s JOIN Loopinterval i ON s.id = i.sessieid " +
                 "WHERE DATEDIFF(day, s.datum, @datum) = 0";
@@ -145,7 +145,7 @@ namespace FitnessDL
 
                     while (reader.Read())
                     {
-                        int sessienummer = (int)reader["sessienummer"];
+                        int sessienummer = (int)reader["id"];
                         if (!loopsessies.ContainsKey(sessienummer))
                         {
                             loopsessies.Add(sessienummer, new Loopsessie(sessienummer, (DateTime)reader["datum"], (int)reader["klantennummer"], (int)reader["duurinminuten"], (double)reader["gemiddeldesnelheid"]));
