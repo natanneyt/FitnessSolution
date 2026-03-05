@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="FitnessBL/FitnessBL.csproj" />
+  <Project Path="FitnessDL/FitnessDL.csproj" />
+  <Project Path="FitnessUI/FitnessUI.csproj" />
+  <Project Path="FitnessUtil/FitnessUtil.csproj" />
+</Solution>
