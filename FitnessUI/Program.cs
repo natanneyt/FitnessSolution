@@ -10,7 +10,9 @@ namespace FitnessUI
     {
         static void Main(string[] args)
         {
-            var builder = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
+            var builder = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
             var config = builder.Build();
 
             string connectionString = config.GetConnectionString("SQLServerConnection");

@@ -17,23 +17,27 @@ namespace FitnessDL
         public void ImporteerGegevens(List<Loopsessie> sessies)
         {
             // Maak de queries aan. Waarden die met @ beginnen zijn parameters
+            // SET IDENTITY_INSERT Loopsessie ON; => dit is nodig aangezien ik sessienummer als id heb genomen.
+            // Als je een nieuwe id-kolom aanmaakt, is dit niet nodig. Ik vond een extra kolom hier overbodig.
             string sessieQuery = "SET IDENTITY_INSERT Loopsessie ON; INSERT INTO Loopsessie (id, datum, klantennummer, duurinminuten, gemiddeldesnelheid) " +
                 "OUTPUT Inserted.id VALUES(@sessienummer, @datum, @klantennummer, @duurinminuten, @gemiddeldesnelheid)";
 
             string intervalQuery = "INSERT INTO Loopinterval (sequentienummer, duurinseconden, loopsnelheid, sessieid) " +
                 "VALUES (@sequentienummer, @duurinseconden, @loopsnelheid, @sessieid)";
-            foreach (Loopsessie loopsessie in sessies)
+
+            // Start een SqlConnection op
+            using (SqlConnection connection = new SqlConnection(_connectionString))
             {
-                // Start een SqlConnection op
-                using (SqlConnection connection = new SqlConnection(_connectionString))
+                connection.Open();
+
+                foreach (Loopsessie loopsessie in sessies)
                 {
-                    connection.Open();
                     // Maak de twee commands aan via je connectie
                     using (SqlCommand sessieCommand = connection.CreateCommand())
                     {
                         using (SqlCommand intervalCommand = connection.CreateCommand())
                         {
-                            // Link de query's aan de juiste commands
+                            // Link de queries aan de juiste commands
                             sessieCommand.CommandText = sessieQuery;
                             intervalCommand.CommandText = intervalQuery;
 
@@ -63,7 +67,7 @@ namespace FitnessDL
                                 intervalCommand.Parameters.Add("@loopsnelheid", SqlDbType.Float);
                                 intervalCommand.Parameters.AddWithValue("@sessieid", sessieId);
 
-                                foreach(Loopinterval interval in loopsessie.Intervallen)
+                                foreach(Loopinterval interval in loopsessie.Intervals)
                                 {
                                     // Voor elk interval stellen we de parameters in en schrijven we individueel naar de databank.
                                     intervalCommand.Parameters["@sequentienummer"].Value = interval.Sequentienummer;
@@ -116,7 +120,7 @@ namespace FitnessDL
                         {
                             loopsessies.Add(sessienummer, new Loopsessie(sessienummer, (DateTime)reader["datum"], (int)reader["klantennummer"], (int)reader["duurinminuten"], (double)reader["gemiddeldesnelheid"]));
                         }
-                        loopsessies[sessienummer].Intervallen.Add(new Loopinterval((int)reader["sequentienummer"], (int)reader["duurinseconden"], (double)reader["loopsnelheid"]));
+                        loopsessies[sessienummer].Intervals.Add(new Loopinterval((int)reader["sequentienummer"], (int)reader["duurinseconden"], (double)reader["loopsnelheid"]));
                     }
                 }
             }
@@ -150,7 +154,7 @@ namespace FitnessDL
                         {
                             loopsessies.Add(sessienummer, new Loopsessie(sessienummer, (DateTime)reader["datum"], (int)reader["klantennummer"], (int)reader["duurinminuten"], (double)reader["gemiddeldesnelheid"]));
                         }
-                        loopsessies[sessienummer].Intervallen.Add(new Loopinterval((int)reader["sequentienummer"], (int)reader["duurinseconden"], (double)reader["loopsnelheid"]));
+                        loopsessies[sessienummer].Intervals.Add(new Loopinterval((int)reader["sequentienummer"], (int)reader["duurinseconden"], (double)reader["loopsnelheid"]));
                     }
                 }
             }

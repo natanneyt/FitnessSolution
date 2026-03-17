@@ -67,7 +67,7 @@ namespace FitnessBL.Domein
         // We gebruiken een HashSet die geen twee dezelfde sequentienummers toelaat.
         // Vergeet de Equals()- en GetHashCode()-methodes van Loopinterval niet te overriden.
         // De setter is private aangezien we deze lijst binnen deze klasse met een methode aanvullen.
-        public HashSet<Loopinterval> Intervallen { get; private set; } = new HashSet<Loopinterval>();
+        public HashSet<Loopinterval> Intervals { get; private set; } = new HashSet<Loopinterval>();
 
         public Loopsessie(int sessienummer, DateTime datum, int klantennummer, int duurInMinuten, double gemiddeldeSnelheid)
         {            
@@ -125,13 +125,13 @@ namespace FitnessBL.Domein
         // We gaan telkens eerst een Loopsessie aanmaken en daarna elk Loopinterval apart toevoegen.
         public void VoegIntervalToe(Loopinterval interval)
         {
-            Intervallen.Add(interval);
+            Intervals.Add(interval);
         }
 
         public override string ToString()
         {
             string tekst = $"Sessie {Sessienummer} - {Datum} - Klant: {Klantennummer} - Duur in minuten: {DuurInMinuten} - Gemiddelde snelheid: {GemiddeldeSnelheid}";
-            foreach(Loopinterval interval in Intervallen) { tekst += $"\n\t{interval.ToString()}"; }
+            foreach(Loopinterval interval in Intervals) { tekst += $"\n\t{interval.ToString()}"; }
             return tekst;
         }
     }
